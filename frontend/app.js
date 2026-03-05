@@ -70,24 +70,46 @@ function initChart(data = mockData) {
     });
 }
 
+const API_URL = 'http://localhost:8000';
+
+async function fetchData(dayType = 'All') {
+    try {
+        const response = await fetch(`${API_URL}/predict?day_type=${dayType}`);
+        const data = await response.json();
+
+        if (data.error) {
+            console.error('API Error:', data.error);
+            return mockData;
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return mockData;
+    }
+}
+
+async function updateDashboard(dayType = 'All') {
+    const data = await fetchData(dayType);
+    initChart(data);
+
+    // Update stats
+    if (data.actual && data.actual.length > 0) {
+        const peak = Math.max(...data.actual);
+        document.getElementById('peak-value').innerText = `${peak.toFixed(1)} kWh`;
+    }
+}
+
 document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
         document.querySelector('.filter-btn.active').classList.remove('active');
         btn.classList.add('active');
 
         const type = btn.getAttribute('data-type');
-        console.log(`Filtering by: ${type}`);
-
-        // In a real app, we'd fetch data here
-        // For now, we'll just jitter the mock data to show it's "interactive"
-        const jitteredData = {
-            ...mockData,
-            actual: mockData.actual.map(v => v * (0.8 + Math.random() * 0.4))
-        };
-        initChart(jitteredData);
+        await updateDashboard(type);
     });
 });
 
-window.onload = () => {
-    initChart();
+window.onload = async () => {
+    await updateDashboard('All');
 };
