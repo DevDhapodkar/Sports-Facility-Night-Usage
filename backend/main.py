@@ -63,6 +63,7 @@ def predict_usage(day_type: str = "All"):
         try:
             # Load model if not loaded
             if predictor.model is None:
+                predictor.prepare_data(DATA_PATH) # This fits the scaler
                 predictor.build_model()
                 predictor.model.load_weights(MODEL_PATH)
             
