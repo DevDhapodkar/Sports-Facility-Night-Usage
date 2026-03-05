@@ -22,9 +22,17 @@ Open `frontend/index.html` directly in your browser or serve it using any static
 - Hourly electricity usage prediction (post-event).
 - Interactive dashboard with filters for day types (Weekday, Weekend, Event Day).
 
-## Architecture
-The project follows a decoupled architecture:
-- **Data Layer**: Synthetic data generation with realistic hourly patterns (`backend/data_gen.py`).
-- **Model Layer**: Simple LSTM RNN implemented in TensorFlow for time-series forecasting (`backend/model.py`).
-- **Backend Layer**: FastAPI server serving model predictions and historical data (`backend/main.py`).
-- **Frontend Layer**: Premium Vanilla JS dashboard with Chart.js and Glassmorphism CSS.
+## Model Details: RNN-LSTM
+The core of the prediction system is a **Long Short-Term Memory (LSTM)** network, which is well-suited for time-series data due to its ability to maintain long-term dependencies.
+
+### Architecture:
+- **Input Layer**: Accepts a 24-hour window of electricity usage.
+- **LSTM Layers**: Two stacked LSTM layers with 50 units each and ReLU activation.
+- **Dropout Layers**: 20% dropout to prevent overfitting.
+- **Dense Layer**: Single output neuron predicting the usage for the next hour.
+- **Optimizer**: Adam
+- **Loss Function**: Mean Squared Error (MSE)
+
+### Data Preprocessing:
+- MinMax Scaling (0, 1) to normalize the features.
+- Slidng window approach for sequence generation.
