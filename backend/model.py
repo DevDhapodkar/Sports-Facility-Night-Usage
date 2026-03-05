@@ -1,10 +1,14 @@
+import sys
+import os
+# Add libs to path before other imports
+sys.path.append("/tmp/sports_libs")
+
 import pandas as pd
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.preprocessing import MinMaxScaler
-import os
 
 class ElectricityPredictor:
     def __init__(self):
@@ -51,10 +55,6 @@ class ElectricityPredictor:
         return self.scaler.inverse_transform(prediction)[0][0]
 
 if __name__ == "__main__":
-    # Add libs to path if running locally
-    import sys
-    sys.path.append("/tmp/sports_libs")
-    
     predictor = ElectricityPredictor()
     X, y = predictor.prepare_data('backend/sports_facility_usage.csv')
     predictor.build_model()
