@@ -90,6 +90,7 @@ async function fetchData(dayType = 'All') {
 }
 
 async function updateDashboard(dayType = 'All') {
+    console.log(`Updating dashboard for day type: ${dayType}...`);
     const data = await fetchData(dayType);
     initChart(data);
 
@@ -97,6 +98,9 @@ async function updateDashboard(dayType = 'All') {
     if (data.actual && data.actual.length > 0) {
         const peak = Math.max(...data.actual);
         document.getElementById('peak-value').innerText = `${peak.toFixed(1)} kWh`;
+        console.log('Dashboard updated successfully.');
+    } else {
+        console.warn('Dashboard updated with fallback data.');
     }
 }
 
