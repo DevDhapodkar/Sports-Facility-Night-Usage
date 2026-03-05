@@ -117,3 +117,4 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 window.onload = async () => {
     await updateDashboard('All');
 };
+// Final frontend cleanup
