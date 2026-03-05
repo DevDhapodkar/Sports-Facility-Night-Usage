@@ -11,12 +11,20 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.preprocessing import MinMaxScaler
 
 class ElectricityPredictor:
+    """
+    A Simple LSTM based RNN for predicting hourly electricity usage patterns.
+    Uses historical data (24-hour windows) to forecast the next hour's usage.
+    """
     def __init__(self):
         self.scaler = MinMaxScaler()
         self.model = None
         self.window_size = 24 # Use last 24 hours to predict next hour
 
     def prepare_data(self, csv_path):
+        """
+        Loads CSV data, scales it using MinMaxScaler, and generates 
+        windowed samples (X) and targets (y) for RNN training.
+        """
         df = pd.read_csv(csv_path)
         data = df['electricity_usage'].values.reshape(-1, 1)
         scaled_data = self.scaler.fit_transform(data)
