@@ -36,3 +36,12 @@ The core of the prediction system is a **Long Short-Term Memory (LSTM)** network
 ### Data Preprocessing:
 - MinMax Scaling (0, 1) to normalize the features.
 - Slidng window approach for sequence generation.
+
+## Troubleshooting
+- **ModuleNotFoundError**: Ensure your `PYTHONPATH` includes the current directory and any external library folders.
+- **Port 8000 in use**: If the FastAPI server fails to start, check if another process is using port 8000.
+- **Model not found**: Ensure `backend/model.py` has been run at least once to generate `backend/model.h5`.
+
+## Testing
+Unit tests are provided for the data layer:
+`python3 backend/test_data.py`
