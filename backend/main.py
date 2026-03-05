@@ -11,7 +11,10 @@ sys.path.append("/tmp/sports_libs")
 # Import our model class
 from model import ElectricityPredictor
 
-app = FastAPI()
+app = FastAPI(
+    title="Sports Facility Usage API",
+    description="API for predicting and retrieving hourly electricity usage data."
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,10 +29,15 @@ MODEL_PATH = 'backend/model.h5'
 
 @app.get("/")
 def read_root():
+    """Health check endpoint."""
     return {"message": "Sports Facility API is running"}
 
 @app.get("/data")
 def get_data(day_type: str = "All"):
+    """
+    Retrieves historical/synthetic electricity usage data.
+    Allows filtering by day_type (Weekday, Weekend, Event).
+    """
     df = pd.read_csv(DATA_PATH)
     if day_type != "All":
         df = df[df['day_type'] == day_type]
